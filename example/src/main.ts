@@ -1,7 +1,7 @@
 import "./style.css";
-import typescriptLogo from "./typescript.svg";
-import { setupCounter } from "./counter";
-import worker from "../../dist/worker.flowcode.js?url";
+import worker from "../../dist/worker.flowcode.min.js?url";
 import * as x from "../../src/main";
 console.log(x);
-x.initializeWorker(worker);
+const backendWorker = x.initializeWorker(worker);
+// @ts-expect-error
+globalThis.backendWorker = backendWorker;

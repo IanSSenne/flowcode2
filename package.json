@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "run-example": "cd example && yarn && yarn dev",
-    "dev": "yarn build && conc -n example-app,flowcode \"yarn run-example\" \"rollup -c -w\"",
+    "dev": "yarn build && conc -n example-app,flowcode \"yarn run-example\" \"rollup -c -w\" --kill-all",
     "build": "rollup -c"
   },
   "devDependencies": {

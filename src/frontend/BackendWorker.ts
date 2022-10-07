@@ -7,7 +7,7 @@ export class BackendWorker {
   constructor(url: string) {
     this.worker = new Worker(url);
     this.worker.onmessage = (event) => {
-      if (event.data === "ready") {
+      if (event.data.value === "ready") {
         this.ready = true;
         this.bind();
       }
@@ -23,18 +23,19 @@ export class BackendWorker {
       this.worker.postMessage(call);
     });
   }
-  dispatchCall(method: string, args: any[]) {
+  private dispatchCall(method: string, args: any[]) {
     this.callId++;
     let ID = this.callId;
     if (this.ready) {
       return new Promise((resolve) => {
+        this.callCache.set(ID, resolve);
         this.worker.postMessage({
           method: method,
           args: args,
           callId: ID,
         });
-        this.callCache.set(ID, resolve);
       }).then((value) => {
+        if (value instanceof Error) throw value;
         this.callCache.delete(ID);
         return value;
       });
@@ -51,5 +52,8 @@ export class BackendWorker {
         return value;
       });
     }
+  }
+  addOne(value: number) {
+    return this.dispatchCall("addOne", [value]);
   }
 }

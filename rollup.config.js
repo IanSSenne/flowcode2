@@ -44,6 +44,7 @@ export default [
   },
   {
     input: "src/backend.worker.ts",
+    plugins: [typescript()],
     output: [
       {
         file: "dist/worker.flowcode.js",
